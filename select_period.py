@@ -128,20 +128,17 @@ class PeriodForm(Form):
         # Row Nº 6 - Buttons
         row_number_ += 1
         x_, y_ = fk.get_place(row_number_, 4)  # get absolute x Place for 1º button in fake row 4
-        button_ = Button(self)
-        button_.SetProps(Parent=self, Caption="Ready", OnClick=self.btn_ready_click,
-                         Left=x_, Top=y_,
-                         Width=layout.DEFAULT_BUTTON_WIDTH, Height=layout.DEFAULT_BUTTON_HEIGHT)
-        self.btnReady = button_
+        self.btnReady = self.__create_button("Ready", self.btn_ready_click, x_=x_, y_=y_)
 
+        # Close action
         self.OnClose = self.__on_form_close
 
     def __create_label(self,
-                       text_: str = 'New Label',
+                       caption_: str = 'New Label',
                        x_: int = 0, y_: int = 0) -> Label:
         """
         Add a new Label to the GUI
-        :param text_: string of text to show in the control
+        :param caption_: string of text to show in the control
         :param x_: horizontal offset in pixels for displaying control
         :param y_:  vertical offset in pixels for displaying control
 
@@ -149,7 +146,7 @@ class PeriodForm(Form):
         """
         # Create new label
         new_label_ = Label(self)
-        new_label_.SetProps(Parent=self, Caption=text_,
+        new_label_.SetProps(Parent=self, Caption=caption_,
                             Left=x_, Top=y_ + layout.DEFAULT_LABEL_TOP_OFFSET)
 
         return new_label_
@@ -241,6 +238,31 @@ class PeriodForm(Form):
                             Width=width_, Height=height_)
 
         return dt_picker_
+
+    def __create_button(self,
+                        caption_: str = 'New button',
+                        command_=None,
+                        enabled_: bool = True,
+                        x_: int = 0, y_: int = 0,
+                        width_: int = layout.DEFAULT_BUTTON_WIDTH, height_: int = layout.DEFAULT_BUTTON_HEIGHT) \
+            -> Button:
+        """
+        Add a new button to the GUI using Place layout manager
+        :param caption_: string of text to show in the widget
+        :param command_: a callback to be invoked when the button is pressed
+        :param enabled_: flag to indicate whether the widget is displayed enabled or disabled
+        :param x_: horizontal offset in pixels for displaying widget
+        :param y_:  vertical offset in pixels for displaying widget
+        :param width_: width for displaying widget
+        :param height_: height of the widget in pixels
+
+        :return: a new button
+        """
+        button_ = Button(self)
+        button_.SetProps(Parent=self, Caption=caption_, OnClick=command_,
+                         Left=x_, Top=y_,
+                         Width=width_, Height=height_)
+        return button_
 
     @staticmethod
     def __on_form_close(sender, action):
