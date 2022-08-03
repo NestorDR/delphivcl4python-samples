@@ -1,0 +1,13 @@
+# Byte-compiled
+__pycache__/
+
+# edition
+.idea/
+.vscode/
+snippets/
+
+# environment
+env/
+
+# files
+notes.txt
