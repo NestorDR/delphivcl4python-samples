@@ -64,6 +64,9 @@ class PeriodForm(Form):
         # Create controls in the GUI
         self.__create_controls()
 
+        # Flag to cancel execution thread
+        self.cancel_execution_ = False
+
     def __create_controls(self):
         """
         Create and add the controls to the container thought as a grid, but positioning them after translation to Place
@@ -127,8 +130,10 @@ class PeriodForm(Form):
 
         # Row Nº 6 - Buttons
         row_number_ += 1
+        total_width = (layout.DEFAULT_BUTTON_LEFT_MARGIN + layout.DEFAULT_BUTTON_WIDTH)
         x_, y_ = fk.get_place(row_number_, 4)  # get absolute x Place for 1º button in fake row 4
-        self.btnReady = self.__create_button("Ready", self.btn_ready_click, x_=x_, y_=y_)
+        self.btnCancel = self.__create_button('Cancel', self.btn_cancel_click, x_=x_ - total_width, y_=y_)
+        self.btnOk = self.__create_button('Ready', self.btn_ok_click, x_=x_, y_=y_)
 
         # Close action
         self.OnClose = self.__on_form_close
@@ -388,7 +393,14 @@ class PeriodForm(Form):
         regex_pattern_hh24_mm_ = re.compile(r'^([01]?[0-9]|2[0-3]):[0-5][0-9]$')
         return not regex_pattern_hh24_mm_.match(s) is None
 
-    def btn_ready_click(self, sender):
+    def btn_cancel_click(self, sender):
+        """
+        Exit application
+        """
+        self.cancel_execution_ = True
+        self.Close()
+
+    def btn_ok_click(self, sender):
         """
         Shows a message informing the selected date range
         :param sender: parent button component
@@ -432,6 +444,10 @@ def main():
     FreeConsole()
     Application.Run()
     main_form_.Destroy()
+    Application.Terminate()
+    if main_form_.cancel_execution_:
+        sys.exit('Canceled by user.')
+    del main_form_
 
 
 # Use of __name__ & __main__

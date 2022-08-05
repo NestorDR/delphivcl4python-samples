@@ -28,6 +28,6 @@ for i in range(0, len(list_), slice_size_):
 
 # To view the exposed sub-members for a main member, by slice
 print("\n\nExposed sub-members for a main Delphi VCL member, in slices")
-list_ = dir(delphivcl.ComboBox)
+list_ = dir(delphivcl.Application)
 for i in range(0, len(list_), slice_size_):
     print(list_[i:i+slice_size_])
