@@ -437,17 +437,28 @@ class PeriodForm(Form):
 
 
 def main():
+    # Begin VCL app
     Application.Initialize()
     Application.Title = "Select Period"
+
+    # Show main VCL form
     main_form_ = PeriodForm(Application)
     main_form_.Show()
     FreeConsole()
     Application.Run()
+
+    # Retrieve results
+    cancel_execution_ = main_form_.cancel_execution_
+
+    # End VLC app, avoiding next sentences (because you will lose stdout console)
+    #   main_form_.Hide() / main_form_.Close()
+    #   Application.Terminate()
     main_form_.Destroy()
-    Application.Terminate()
-    if main_form_.cancel_execution_:
-        sys.exit('Canceled by user.')
+    Application.Destroy()
     del main_form_
+
+    if cancel_execution_:
+        sys.exit('Canceled by user.')
 
 
 # Use of __name__ & __main__
